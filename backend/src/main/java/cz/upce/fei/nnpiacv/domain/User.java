@@ -1,25 +1,30 @@
 package cz.upce.fei.nnpiacv.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
 
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
+//@Getter
+//@Setter
+//@ToString
+@Entity
+@NoArgsConstructor
+@Table(name = "app_user")
 public class User {
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true)
     private String email;
     private String password;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public Long getId() {
+        return id;
+    }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 }
