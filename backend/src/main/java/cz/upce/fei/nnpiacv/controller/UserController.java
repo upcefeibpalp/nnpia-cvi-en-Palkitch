@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("/api/v1")
 public class UserController {
     private final UserService userService;
 
@@ -23,7 +24,7 @@ public class UserController {
     }
 
 
-    @PostMapping("api/v1/users")
+    @PostMapping("/users")
     public ResponseEntity<?> createUser(@RequestBody UserRequestDto user) {
         User createdUser = userService.createUser(new User(user.getEmail(), user.getPassword()));
         /*return ResponseEntity.status(201).body(
@@ -45,5 +46,11 @@ public class UserController {
                 return Collections.singletonList(user);
             }
         }
+    }
+
+    // delete user method delete mapping
+    @DeleteMapping("/user/{id}")
+    public void deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
     }
 }

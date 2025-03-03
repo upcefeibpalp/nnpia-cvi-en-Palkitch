@@ -18,18 +18,28 @@ public class UserService {
 
     public User findUser(Long id) {
         Optional<User> user = userRepository.findById(id);
-        log.info("User : {}",user.get());
+        log.info("User : {}", user.get());
         return user.orElse(null);
     }
+
     public User createUser(User user) {
         return userRepository.save(user);
     }
+
     public Collection<User> findUsers() {
         return userRepository.findAll();
     }
 
     public Optional<User> findbyEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public User deleteUser(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            userRepository.deleteById(id);
+        }
+        return user;
     }
 /*
     public User findUserById(Long id) {
