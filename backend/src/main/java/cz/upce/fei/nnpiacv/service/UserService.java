@@ -3,6 +3,8 @@ package cz.upce.fei.nnpiacv.service;
 import cz.upce.fei.nnpiacv.domain.User;
 import cz.upce.fei.nnpiacv.repository.UserRepository;
 
+import exception.UserAlreadyExistsException;
+import exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,15 +19,15 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User findUser(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        log.info("User : {}", user.get());
-        return user.orElse(null);
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
     }
 
     public User createUser(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new UserAlreadyExistsException("User with email " + user.getEmail() + " already exists");
+        }
         return userRepository.save(user);
     }
-
     public Collection<User> findUsers() {
         return userRepository.findAll();
     }
